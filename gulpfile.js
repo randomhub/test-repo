@@ -10,6 +10,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
+    spritesmith = require('gulp.spritesmith'),
     watch = require('gulp-watch');
 
 
@@ -89,6 +90,18 @@ gulp.task('build', [
     'css-build',
     'image-build'
 ]);
+
+gulp.task('sprite', function() {
+    var spriteData =
+        gulp.src('./src/img/sprite/*.*') // путь, откуда берем картинки для спрайта
+            .pipe(spritesmith({
+                imgName: 'sprite.png',
+                cssName: 'sprite.css',
+            }));
+
+    spriteData.img.pipe(gulp.dest('./build/img/')); // путь, куда сохраняем картинку
+    spriteData.css.pipe(gulp.dest('./build/css/')); // путь, куда сохраняем стили
+});
 
 gulp.task('watch', function(){
     watch([path.watch.html], function(event, cb) {
